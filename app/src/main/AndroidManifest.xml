@@ -24,6 +24,5 @@
         <activity
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WeIcomeActivity"></activity>
     </application>
 </manifest>
