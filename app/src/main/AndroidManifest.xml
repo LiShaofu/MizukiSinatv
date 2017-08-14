@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.muzuki.sinatv">
+    package="com.mizuki.sinatv">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,6 +24,5 @@
         <activity
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WeIcomeActivity"></activity>
     </application>
 </manifest>

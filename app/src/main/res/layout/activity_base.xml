@@ -75,7 +75,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.muzuki.sinatv.view.PublicLoadLayout
+    <com.mizuki.sinatv.view.PublicLoadLayout
         android:id="@+id/public_load_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
