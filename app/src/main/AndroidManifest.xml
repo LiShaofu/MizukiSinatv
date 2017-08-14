@@ -21,9 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait" />
+=======
+        <activity android:name=".WeIcomeActivity"></activity>
+>>>>>>> lishaofu_one
 
     </application>
 </manifest>
