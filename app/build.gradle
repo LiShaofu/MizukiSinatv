@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.mizuki.sinatv"
         minSdkVersion 19
-        targetSdkVersion 22
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -46,6 +46,9 @@ dependencies {
     //动画
     //图片加载
     compile files('libs/android-viewbadger.jar')
+    compile files('libs/libksyplayer.jar')
+    compile files('libs/libksystat.jar')
+    compile project(':giftlibrary')
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
@@ -62,6 +65,5 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile files('libs/libksyplayer.jar')
-    compile files('libs/libksystat.jar')
+    compile files('libs/ksylive.jar')
 }

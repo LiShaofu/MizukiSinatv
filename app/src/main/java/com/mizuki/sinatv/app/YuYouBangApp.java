@@ -1,5 +1,6 @@
 package com.mizuki.sinatv.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -16,12 +17,12 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * date: Created xiaoyuan on 16/11/05.
  */
 public class YuYouBangApp extends Application {
-
     private static Context mApplicationContext;
     private static final String LOGIN = "login";
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mizuki.sinatv">
+
     <!-- 往sdcard中写入数据的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 在sdcard中创建/删除文件的权限 -->
@@ -15,6 +16,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- CAMERA -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".app.YuYouBangApp"
@@ -32,15 +36,19 @@
         <activity
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.HomeActivity">
+        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".test.Test2Activity" />
+        <activity android:name=".activity.SinatvActivity" />
+        <activity android:name=".activity.SigninActivity" />
+        <activity android:name=".activity.SignupActivity" />
+        <activity android:name=".activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".test.Test2Activity" />
-        <activity android:name=".activity.SinatvActivity"></activity>
+        <activity android:name=".activity.LiveActivity"></activity>
     </application>
 
 </manifest>

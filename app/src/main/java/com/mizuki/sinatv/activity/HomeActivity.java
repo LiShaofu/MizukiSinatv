@@ -1,5 +1,6 @@
 package com.mizuki.sinatv.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity {
     @BindView(R.id.home_vp)
@@ -35,6 +37,11 @@ public class HomeActivity extends BaseActivity {
     private ArrayList<Fragment> fragmentList;
 
     @Override
+    protected int getContentResId() {
+        return R.layout.activity_home;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
@@ -44,11 +51,6 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initTitleBar(HeaderBuilder builder) {
         builder.goneToolbar();
-    }
-
-    @Override
-    protected int getContentResId() {
-        return R.layout.activity_home;
     }
 
     private void initData() {
@@ -99,5 +101,12 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @OnClick(R.id.home_iv_room)
+    public void onViewClicked() {
+        Intent intent = new Intent();
+        intent.setClass(HomeActivity.this, LiveActivity.class);
+        startActivity(intent);
     }
 }

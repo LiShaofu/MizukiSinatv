@@ -24,5 +24,11 @@ public class UrlConfig {
     }
 
 
-    public final static String API_V1_0_TEST = "contact/company/list.json";
+    public final static String API_V1_0_TEST = "contact/company/list.json";//测试用
+    public final static String API_FILE_UPLOAD = "util/file/upload.json";//##图片上传
+    public final static String API_USER_SIGN_UP = "live/register.json";//##注册接口
+    public final static String API_USER_SIGN_IN = "live/login.json";//##登录接口
+    public final static String API_USER_USERINFO= "live/my_info.json";//##信息接口
+
+
 }

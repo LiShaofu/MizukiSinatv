@@ -27,7 +27,6 @@ public interface MyNews {
     @GET("index/{id}")
     Call<TopNews> getNew(@Path("id")String id);
 
-    //------------------------------帅逼线---------------------------------
     @POST("index")
     Call<TopNews> postNew(@Body FormBody formBody);
 }

@@ -64,6 +64,7 @@
             android:src="@mipmap/ic_launcher" />
 
         <TextView
+            android:id="@+id/live_tv_status"
             android:background="@drawable/shape_juxing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

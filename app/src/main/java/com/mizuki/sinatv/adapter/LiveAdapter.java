@@ -48,7 +48,12 @@ public abstract class LiveAdapter extends RecyclerView.Adapter<LiveHolder> {
                     .getData().getLive_name());
             holder.liveTvUserName.setText(list.get(position)
                     .getUser().getUser_data().getUser_name());
-
+            if (list.get(position).getData().getStatus() == 0) {
+                holder.liveTvStatus.setText("正在直播");
+            }
+            if (list.get(position).getData().getStatus() == 1) {
+                holder.liveTvStatus.setText("正在休息");
+            }
             String liveIvAvatar_url = list.get(position).getUser().getUser_data().getAvatar();
             String liveIvPic_url = list.get(position).getData().getPic();
 
@@ -75,7 +80,7 @@ public abstract class LiveAdapter extends RecyclerView.Adapter<LiveHolder> {
     /**
      * 点击的抽象方法
      */
-    public abstract void clickLiveItem( int position);
+    public abstract void clickLiveItem(int position);
 
     @Override
     public int getItemCount() {
@@ -106,6 +111,7 @@ class LiveHolder extends RecyclerView.ViewHolder {
     TextView liveTvLiveName;//直播名字
     TextView liveTvUserName;//名字
     ImageView liveIvPic;//图片
+    TextView liveTvStatus;//直播状态
 
     public LiveHolder(View itemView) {
         super(itemView);
@@ -113,5 +119,6 @@ class LiveHolder extends RecyclerView.ViewHolder {
         liveTvLiveName = itemView.findViewById(R.id.live_tv_live_name);
         liveTvUserName = itemView.findViewById(R.id.live_tv_user_name);
         liveIvPic = itemView.findViewById(R.id.live_iv_pic);
+        liveTvStatus = itemView.findViewById(R.id.live_tv_status);
     }
 }

@@ -58,8 +58,11 @@ public class SiftFragment extends BaseNetFragment<Live> {
         liveAdapter = new LiveAdapter(getActivity()) {
             @Override
             public void clickLiveItem(int position) {
-                Toast.makeText(getActivity(), "点击" + position, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), SinatvActivity.class);
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), SinatvActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("list", list.get(position));
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         };

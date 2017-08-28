@@ -33,7 +33,7 @@ public class Live implements Serializable {
         this.error_code = error_code;
     }
 
-    public static class ResultBean {
+    public static class ResultBean  implements Serializable {
         private List<ListBean> list;
 
         public List<ListBean> getList() {
@@ -44,7 +44,7 @@ public class Live implements Serializable {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable {
             /**
              * created_at : 1502852670789
              * updated_at : 1502852692489
@@ -109,7 +109,7 @@ public class Live implements Serializable {
                 this.user = user;
             }
 
-            public static class DataBean {
+            public static class DataBean  implements Serializable {
                 /**
                  * status : 1
                  * live_type : 1
@@ -155,7 +155,7 @@ public class Live implements Serializable {
                 }
             }
 
-            public static class UserBean {
+            public static class UserBean  implements Serializable {
                 /**
                  * user_data : {"user_name":"wang","avatar":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2608404801,4206400884&f=23&gp=0.jpg","sign":"哈哈哈"}
                  * id : 1387930930184194
@@ -200,7 +200,7 @@ public class Live implements Serializable {
                     this.updated_at = updated_at;
                 }
 
-                public static class UserDataBean {
+                public static class UserDataBean  implements Serializable {
                     /**
                      * user_name : wang
                      * avatar : https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2608404801,4206400884&f=23&gp=0.jpg

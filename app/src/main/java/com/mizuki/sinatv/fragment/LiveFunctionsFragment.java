@@ -1,5 +1,6 @@
 package com.mizuki.sinatv.fragment;
 
+import android.app.Activity;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,12 +27,19 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mizuki.sinatv.R;
+import com.mizuki.sinatv.activity.SinatvActivity;
 import com.mizuki.sinatv.adapter.FunctionsAvatarAdapter;
 import com.mizuki.sinatv.adapter.FunctionsMessageAdapter;
 import com.mizuki.sinatv.adapter.GridViewAdapter;
 import com.mizuki.sinatv.adapter.ViewPagerAdapter;
 import com.mizuki.sinatv.bean.Gift;
+import com.mizuki.sinatv.bean.Live;
 import com.mizuki.sinatv.fragment.base.BaseFragment;
+import com.squareup.picasso.Picasso;
+
+import org.dync.giftlibrary.widget.CustormAnim;
+import org.dync.giftlibrary.widget.GiftControl;
+import org.dync.giftlibrary.widget.GiftModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,14 +97,19 @@ public class LiveFunctionsFragment extends BaseFragment {
     Button functionsBtnMessageSend;
     @BindView(R.id.functions_ll_message)
     LinearLayout functionsLlMessage;
-    @BindView(R.id.functions_ll_)
-    LinearLayout functionsLl;
+    @BindView(R.id.functions_gift_show)
+    LinearLayout functionsGiftShow;//显示发送的礼物
+    @BindView(R.id.live_functions)
+    FrameLayout liveFunctions;
     private Unbinder unbinder;
     private List<String> list;
+    private Live.ResultBean.ListBean listBean;
     private FunctionsMessageAdapter functionsMessageAdapter;
     private List<Gift.GiftListBean> mDatas;
     private int pageSize = 9;//页数据
     private List<Gift.GiftListBean> giftList;
+    private GiftControl giftControl;
+    private SinatvActivity sinatvActivity;
 
     @Override
     protected int getContentResId() {
@@ -115,13 +129,34 @@ public class LiveFunctionsFragment extends BaseFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        sinatvActivity = (SinatvActivity) activity;
+        listBean = sinatvActivity.listBean;
+        Log.e("TAG01", sinatvActivity.listBean.getUser().getUser_data().getSign());
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initViewGift();
         initDatas();
+        showBozhu();//播主信息
         showAvatar();//好多头像
         showDate();//日期
-        showTime();//时间
+//        showTime();//时间
         showMessage();//好多消息
+    }
+
+    private void showBozhu() {
+        functionsSinatvName.setText(
+                listBean.getData().getLive_name().toString());
+        functionsSinatvUserName.setText(
+                listBean.getUser().getUser_data().getUser_name().toString());
+        Picasso.with(getActivity())
+                .load(listBean.getUser().getUser_data().getAvatar().toString())
+                .error(R.mipmap.ic_launcher)
+                .into(functionsSinatvAvatar);
     }
 
     private void showMessage() {
@@ -212,61 +247,85 @@ public class LiveFunctionsFragment extends BaseFragment {
     @OnClick({R.id.room_down_publicchat, R.id.functions_btn_message_send, R.id.room_down_gift})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-//            case R.id.room_down_publicchat://发消息图标的监听事件
-//                //图标一列隐藏,发消息显示
-//                functionsLlIco.setVisibility(View.GONE);
-//                functionsLlMessage.setVisibility(View.VISIBLE);
-//                break;
-//            case R.id.functions_btn_message_send://发送消息
-//                String message = functionsEtMessage.getText().toString();
-//                //刷新,滚动到相应条目
-//                functionsMessageAdapter.setData(message);
-//                functionsMessageRl.smoothScrollToPosition(functionsMessageAdapter.getData().size());
-//                break;
+            case R.id.room_down_publicchat://发消息图标的监听事件
+                //图标一列隐藏,发消息显示
+                functionsLlIco.setVisibility(View.GONE);
+                functionsLlMessage.setVisibility(View.VISIBLE);
+                break;
+            case R.id.functions_btn_message_send://发送消息
+                String message = functionsEtMessage.getText().toString();
+                //刷新,滚动到相应条目
+                functionsMessageAdapter.setData(message);
+                functionsMessageRl.smoothScrollToPosition(functionsMessageAdapter.getData().size());
+                break;
             case R.id.room_down_gift:
                 Toast.makeText(getActivity(), "发礼物图标的监听事件", Toast.LENGTH_SHORT).show();
-//                recycleView_talk.setVisibility(View.INVISIBLE);
-                View view2 = View.inflate(getActivity(), R.layout.livegift, null);
-                ViewPager mPager = view2.findViewById(R.id.vp_livegift);
-                LinearLayout mLlDot = view2.findViewById(R.id.ll_dot);
-
-                LayoutInflater inflater = LayoutInflater.from(getActivity());
-                //总的页数=总数/每页数量，并取整
-                int pageCount = (int) Math.ceil(mDatas.size() * 1.0 / pageSize);
-                List<View> mPagerList = new ArrayList<>();
-                for (int i = 0; i < pageCount; i++) {
-                    // 每个页面都是inflate出一个新实例
-                    GridView gridView = (GridView) inflater.inflate(R.layout.gridview, mPager, false);
-                    gridView.setNumColumns(3);
-                    gridView.setAdapter(new GridViewAdapter(getActivity(), mDatas, i, pageSize));
-                    mPagerList.add(gridView);
-
-                    gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            int pos = position + curIndex * pageSize;
-                        }
-                    });
-                }
-
-                //设置适配器
-                mPager.setAdapter(new ViewPagerAdapter(mPagerList));
-                //setOvalLayout(); //设置圆点
-                PopupWindow popupWindow1 = new PopupWindow(view2, RelativeLayout.LayoutParams.MATCH_PARENT, 900);
-
-                //设置可以获取焦点，否则弹出菜单中的EditText是无法获取输入的
-                popupWindow1.setFocusable(true);
-                //这句是为了防止弹出菜单获取焦点之后，点击activity的其他组件没有响应
-                popupWindow1.setBackgroundDrawable(new BitmapDrawable());
-
-                popupWindow1.setAnimationStyle(R.style.PopupAnimation);
-                //在底部显示
-                popupWindow1.showAtLocation(view2, Gravity.BOTTOM, 0, 0);
+                giftShow();
                 break;
-
         }
     }
 
+    //发礼物
+    private void giftShow() {
+        View view2 = View.inflate(getActivity(), R.layout.livegift, null);
+        ViewPager mPager = view2.findViewById(R.id.vp_livegift);
+        LinearLayout mLlDot = view2.findViewById(R.id.ll_dot);//输入礼物个数
+
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        //总的页数=总数/每页数量，并取整
+        int pageCount = (int) Math.ceil(mDatas.size() * 1.0 / pageSize);
+        List<View> mPagerList = new ArrayList<>();
+        for (int i = 0; i < pageCount; i++) {
+            // 每个页面都是inflate出一个新实例
+            GridView gridView = (GridView) inflater.inflate(R.layout.gridview, mPager, false);
+            gridView.setNumColumns(3);
+            gridView.setAdapter(new GridViewAdapter(getActivity(), mDatas, i, pageSize));
+            mPagerList.add(gridView);
+            //点击事件
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            int pos = position + curIndex * pageSize;
+                    functionsGiftShow.setVisibility(View.VISIBLE);
+                    GiftModel giftModel = new GiftModel();
+                    giftModel.setGiftId("123456")
+                            .setGiftName("礼物名字")
+                            .setGiftCount(1)
+                            .setGiftPic("https：//raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/000.png")
+                            .setSendUserId("1234")
+                            .setSendUserName("李四")
+                            .setSendUserPic("")
+                            .setSendGiftTime(System.currentTimeMillis())
+                            .setCurrentStart(false);
+                    giftControl.loadGift(giftModel);
+                    Toast.makeText(getActivity(), "nnvisnfvi", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        //设置适配器
+        mPager.setAdapter(new ViewPagerAdapter(mPagerList));
+        //setOvalLayout(); //设置圆点
+        PopupWindow popupWindow1 = new PopupWindow(view2, RelativeLayout.LayoutParams.MATCH_PARENT, 900);
+
+        //设置可以获取焦点，否则弹出菜单中的EditText是无法获取输入的
+        popupWindow1.setFocusable(true);
+        //这句是为了防止弹出菜单获取焦点之后，点击activity的其他组件没有响应
+        popupWindow1.setBackgroundDrawable(new BitmapDrawable());
+
+        popupWindow1.setAnimationStyle(R.style.PopupAnimation);
+        //在底部显示
+        popupWindow1.showAtLocation(view2, Gravity.BOTTOM, 0, 0);
+    }
+
+    //礼物初始化
+    private void initViewGift() {
+        giftControl = new GiftControl(getActivity());
+        giftControl.setGiftLayout(false, functionsGiftShow, 3)//第三个礼物轨道
+                .setCustormAnim(new CustormAnim());
+    }
+
+    //assets目录下的gift.json
     private void initDatas() {
         Log.d("bbb", "gson::我也走了");
         mDatas = new ArrayList<>();
@@ -286,6 +345,5 @@ public class LiveFunctionsFragment extends BaseFragment {
             e.printStackTrace();
             Log.d("aaa", "e");
         }
-
     }
 }

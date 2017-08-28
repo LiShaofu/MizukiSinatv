@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.ksyun.media.player.IMediaPlayer;
@@ -14,6 +15,7 @@ import com.ksyun.media.player.KSYTextureView;
 import com.mizuki.sinatv.R;
 import com.mizuki.sinatv.activity.base.BaseActivity;
 import com.mizuki.sinatv.adapter.HomeAdapter;
+import com.mizuki.sinatv.bean.Live;
 import com.mizuki.sinatv.fragment.LiveBroadcastFragment;
 import com.mizuki.sinatv.fragment.LiveFunctionsFragment;
 
@@ -47,6 +49,18 @@ public class SinatvActivity extends BaseActivity {
     private LiveFunctionsFragment liveFunctionsFragment;
     private LiveBroadcastFragment liveBroadcastFragment;
 
+    public Live.ResultBean.ListBean listBean;
+
+    //得到上个Intent的传参
+    public Live.ResultBean.ListBean getlistBean() {
+        if (listBean == null) {
+            Bundle bundle = getIntent().getExtras();
+            listBean = (Live.ResultBean.ListBean) bundle.getSerializable("list");
+            Log.e("TAG", "" + listBean.getUser().getUser_data().getSign());
+        }
+        return listBean;
+    }
+
     @Override
     protected int getContentResId() {
         return R.layout.activity_sinatv;
@@ -66,6 +80,7 @@ public class SinatvActivity extends BaseActivity {
     }
 
     private void init() {
+        getlistBean();
         fragments = new ArrayList<>();
         liveFunctionsFragment = new LiveFunctionsFragment();
         liveBroadcastFragment = new LiveBroadcastFragment();
@@ -74,6 +89,9 @@ public class SinatvActivity extends BaseActivity {
 
         manager = getSupportFragmentManager();
 
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("fragData", listBean);
+        fragments.get(1).setArguments(bundle);
         sinatvVp.setAdapter(new HomeAdapter(getSupportFragmentManager(), fragments));
         sinatvVp.setCurrentItem(1); //设置当前页是第二页
         //滑动监听
@@ -104,8 +122,6 @@ public class SinatvActivity extends BaseActivity {
         mVideoView.setOnMessageListener(mOnMessageListener);
         mVideoView.setScreenOnWhilePlaying(true);
 
-//        mDataSource = getIntent().getStringExtra("path");
-//        mDataSource = "rtmp://121.42.26.175:1935/mytv";
         mDataSource = "rtmp://live.hkstv.hk.lxdns.com/live/hks";//香港卫视
         try {
             mVideoView.setDataSource(mDataSource);
@@ -138,9 +154,7 @@ public class SinatvActivity extends BaseActivity {
                 default:
                     Log.e(TAG, "OnErrorListener, Error:" + what + ",extra:" + extra);
             }
-
             videoPlayEnd();
-
             return false;
         }
     };
@@ -150,7 +164,6 @@ public class SinatvActivity extends BaseActivity {
             mVideoView.release();
             mVideoView = null;
         }
-
         finish();
     }
 
@@ -222,4 +235,13 @@ public class SinatvActivity extends BaseActivity {
             long progress = duration * percent / 100;
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            videoPlayEnd();
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 }
